@@ -105,10 +105,26 @@ fn quicksort<T: PartialOrd + std::fmt::Debug>(v: &mut [T]) {
     }
 
     // Now choose a pivot and do the organizing.
-    
-    // ...
+    // Pivot is last element
+    let pivot = length - 1;
+    let mut low = 0;
 
-    let smaller = 0; // Totally wrong – you should fix this.
+    // Loop through every element up to pivot
+    for i in 0..pivot {
+        // Check if current element is smaller or equal to the pivot
+        if v[i] <= v[pivot] {
+            //If it is swap values at i and low
+            v.swap(i,low);
+            //Increment low 
+            low += 1;
+        }
+    }
+
+    //Swap low with pivot so that all values greater than the pivot are to the right
+    //and value that are lower than the pivot are to the left
+    v.swap(low, pivot);
+
+    let smaller = low;
 
     // Sort all the items < pivot
     quicksort(&mut v[0..smaller]);
@@ -182,9 +198,33 @@ fn merge<T: PartialOrd + std::marker::Copy + std::fmt::Debug>(xs: Vec<T>, ys: Ve
     // vector, and then push all the remaining elements from the
     // other vector onto the result.
 
-    // This is totally wrong and will not sort. You should replace it
-    // with something useful. :)
-    xs
+    let mut xs_index = 0;
+    let mut ys_index = 0;
+
+    let mut final_vector = Vec::new();
+
+    while xs_index < xs.len() && ys_index < ys.len() {
+        if xs[xs_index] < ys[ys_index] {
+            final_vector.push(xs[xs_index]);
+            xs_index += 1;
+        }
+        else {
+            final_vector.push(ys[ys_index]);
+            ys_index += 1;
+        }
+    }
+
+    while xs_index < xs.len() {
+        final_vector.push(xs[xs_index]);
+        xs_index += 1;
+    }
+
+    while ys_index < ys.len() {
+        final_vector.push(ys[ys_index]);
+        ys_index += 1;
+    }
+    
+    final_vector
 }
 
 fn is_sorted<T: PartialOrd>(slice: &[T]) -> bool {
